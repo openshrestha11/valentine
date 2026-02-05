@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Soixya – Be My Valentine</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom right, #ff9a9e, #fad0c4);
+    text-align: center;
+    padding-top: 60px;
+    overflow-x: hidden;
+    cursor: url('https://cur.cursors-4u.net/symbols/sym-1/sym46.cur'), auto;
+  }
+  .card {
+    backdrop-filter: blur(6px);
+    border: 2px solid rgba(255,255,255,0.6);
+    background: white;
+    max-width: 520px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    position: relative;
+    animation: pop 1s ease;
+  }
+  @keyframes pop { from{transform:scale(.8);} to{transform:scale(1);} }
+
+  button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .yes { background: #ff4d6d; color: white; }
+  .no { background: #ccc; position: absolute; }
+
+  #letter { display: none; margin-top: 20px; }
+
+  #popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    z-index: 100;
+  }
+
+  /* Falling hearts */
+  .heart {
+    position: fixed;
+    top: -10px;
+    animation: fall linear infinite;
+    font-size: 22px;
+  }
+  @keyframes fall {
+    0% { transform: translateY(0) scale(0.8); opacity: 1; }
+    100% { transform: translateY(100vh) scale(1.2); opacity: 0; }
+  }
+
+  /* Sparkles */
+  .spark {
+    position: fixed;
+    pointer-events:none;
+    font-size:16px;
+    animation: spark 1s forwards;
+  }
+  @keyframes spark{
+    from{opacity:1;} to{opacity:0; transform:translateY(-10px);}
+  }
+
+  /* Gallery */
+  .gallery img{
+    width:90px;
+    height:90px;
+    object-fit:cover;
+    border-radius:12px;
+    margin:5px;
+    transition:.3s;
+  }
+  .gallery img:hover{ transform:scale(1.1); }
+  /* Extra front page beauty */
+  .ribbon{
+    position:absolute;
+    top:-10px;
+    right:-10px;
+    background:#ff4d6d;
+    color:white;
+    padding:6px 12px;
+    border-radius:12px;
+    font-size:14px;
+    transform:rotate(6deg);
+  }
+  .pulse{
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 5px #ff4d6d;}
+    50%{box-shadow:0 0 20px #ff4d6d;}
+    100%{box-shadow:0 0 5px #ff4d6d;}
+  }
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background:radial-gradient(circle at top, rgba(255,255,255,.4), transparent 60%);
+    pointer-events:none;
+  }
+</style>
+</head>
+<body>
+
+<div class="card pulse">
+  <div class="ribbon">A little question from Open Stha</div>
+  <h2 style="font-size:28px; background:linear-gradient(90deg,#ff4d6d,#ff85a2); -webkit-background-clip:text; color:transparent;">Hey Soixya ❤️</h2>
+  <p style="font-size:18px;">From the moment I met you, my world became softer, warmer and happier ✨</p>
+  <p style="font-size:22px;font-weight:bold;">Will you be my Valentine, Soixya? 💝</p>
+  <div style="font-size:40px;margin:10px; animation: bounce 1.5s infinite;">🌸 💖 🌷 💫</div>
+
+  <button class="yes" onclick="yesClick()">Yes</button>
+  <button class="no" id="noBtn" onmouseover="moveNo()">No</button>
+
+  <div id="letter">
+    <h3>My Love Letter for Soixya 💌</h3>
+    <p id="type"></p>
+
+    <div class="gallery">
+      <p>Our future memories ✨</p>
+      <img src="soixya.jpg" />
+    </div>
+  </div>
+</div>
+
+<div id="popup"></div>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/02/23/audio_4f3b2a1d8e.mp3?filename=romantic-piano-110481.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const msg = `Thank you for saying YES, my Soixya! You make my life brighter, happier, and full of beautiful moments. I promise to always care for you, support you, respect you, and do everything to keep that cute smile on your face. You are my favorite person in this world ❤️`;
+
+function typeWriter(i=0){
+  if(i < msg.length){
+    document.getElementById('type').innerHTML += msg.charAt(i);
+    setTimeout(()=>typeWriter(i+1), 40);
+  }
+}
+
+function yesClick() {
+  document.getElementById('popup').style.display='block';
+  popup.innerHTML="🎉 Yay! Thank you for saying YES Soixya! 💖";
+  document.getElementById('letter').style.display='block';
+  typeWriter();
+  explode();
+  setTimeout(showFinal, 6000);
+}
+
+function moveNo() {
+  const btn = document.getElementById('noBtn');
+  btn.style.left = Math.random()*300 + 'px';
+  btn.style.top = Math.random()*200 + 'px';
+}
+
+// falling hearts
+setInterval(()=>{
+  const h=document.createElement('div');
+  h.className='heart';
+  h.innerHTML='💖';
+  h.style.left=Math.random()*100+'vw';
+  h.style.animationDuration=(3+Math.random()*3)+'s';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+},300);
+
+// cursor sparkles
+document.addEventListener('mousemove',e=>{
+  const s=document.createElement('div');
+  s.className='spark';
+  s.style.left=e.pageX+'px';
+  s.style.top=e.pageY+'px';
+  s.innerHTML='✨';
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),1000);
+});
+
+// heart explosion
+function explode(){
+  for(let i=0;i<25;i++){
+    const h=document.createElement('div');
+    h.className='heart';
+    h.innerHTML='💝';
+    h.style.left=50+Math.random()*20+'vw';
+    h.style.animationDuration='1.5s';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),1500);
+  }
+}
+
+// music start
+window.addEventListener('click',()=>{
+  document.getElementById('music').play();
+});
+
+function showFinal(){
+  document.body.innerHTML=`
+  <div style="margin-top:80px;font-family:Arial; animation:pop 1s;">
+    <h1>Best decision ever, Soixya 💖</h1>
+    <h3 style=\"margin-top:10px;\">— Love, Open Stha 💌</h3</h1>
+    <p>You just made someone the happiest person alive.</p>
+    <p>I promise to love you in every universe 🌹</p>
+    <div style="font-size:40px">💞💫🥰🌸✨</div>
+  </div>`;
+}
+</script>
+
+</body>
+</html>
